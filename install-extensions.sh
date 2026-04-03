@@ -1,13 +1,15 @@
 #!/bin/bash
 
 update() {
-	sed -i.backup '11,$d' $0
-	echo >> $0
+	sed -i.backup '14,$d' $0 # make sure 14 is the right first line
 	codium --list-extensions | xargs -L 1 echo codium --force --install-extension >> $0
 }
 
-update
-
+while getopts "u" flag; do
+	case "$flag" in
+		u) update; echo "updating extensions list... git push to share with other devices..."
+	esac
+done
 
 codium --force --install-extension aaa-lt.charmed-nest-icons
 codium --force --install-extension jeanp413.open-remote-ssh
